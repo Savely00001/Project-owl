@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/teachers_screen_student_has.dart';
 
 void main() {
   runApp(const MyApp());
@@ -167,21 +168,20 @@ class MyHomePage extends StatelessWidget {
                         text: "Нажмите, чтобы выбрать из списка",
                       ),
                     ),
-
-                    const SizedBox(height: 50),
                   ],
                 ),
               ),
             ),
-            //Нижняя панель
+
             Container(
+              margin: EdgeInsets.only(bottom: 20),
               width: double.infinity, //Растягиваем на всю ширину экрана
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(199, 199, 199, 1),
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: Colors.white, width: 1),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
@@ -189,6 +189,7 @@ class MyHomePage extends StatelessWidget {
                       text: "Входящие",
                       icon: Icons.sms,
                       hasBack: false,
+                      hasColor: true,
                     ),
                   ),
                   Expanded(
@@ -196,6 +197,15 @@ class MyHomePage extends StatelessWidget {
                       text: "Преподаватели",
                       icon: Icons.auto_stories,
                       hasBack: false,
+                      hasColor: true,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Teachers(),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   Expanded(
@@ -203,13 +213,12 @@ class MyHomePage extends StatelessWidget {
                       text: "Профиль",
                       icon: Icons.person,
                       hasBack: true,
+                      hasColor: true,
                     ),
                   ),
                 ],
               ),
             ),
-
-            const SizedBox(height: 10),
           ],
         ),
       ),
@@ -246,31 +255,46 @@ class ButtonMain extends StatelessWidget {
   final String text;
   final IconData icon;
   final bool hasBack;
+  final bool hasColor;
+  final VoidCallback? onTap;
   const ButtonMain({
     super.key,
     required this.text,
     required this.icon,
     required this.hasBack,
+    required this.hasColor,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: hasBack ? Color.fromRGBO(33, 173, 252, 1) : Colors.transparent,
           borderRadius: BorderRadius.circular(5),
+          border: Border.all(color: Colors.white, width: 1),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white),
+            Icon(
+              icon,
+              color: hasColor
+                  ? const Color.fromARGB(255, 255, 255, 255)
+                  : const Color.fromARGB(255, 0, 0, 0),
+            ),
             const SizedBox(height: 5),
             Text(
               text,
-              style: const TextStyle(fontSize: 10, color: Colors.white),
+              style: TextStyle(
+                fontSize: 10,
+                color: hasColor
+                    ? const Color.fromARGB(255, 255, 255, 255)
+                    : const Color.fromARGB(255, 0, 0, 0),
+              ),
             ),
           ],
         ),
