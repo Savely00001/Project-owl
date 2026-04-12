@@ -275,7 +275,6 @@ class ButtonMain extends StatelessWidget {
         decoration: BoxDecoration(
           color: hasBack ? Color.fromRGBO(33, 173, 252, 1) : Colors.transparent,
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: Colors.white, width: 1),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
