@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class NoInternetScreen extends StatelessWidget {
   final VoidCallback onRetry;
-  
+
   const NoInternetScreen({super.key, required this.onRetry});
 
   @override
@@ -34,32 +34,32 @@ class NoInternetScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             const Spacer(),
-            
+
             // Иконка отсутствия сети
             const Icon(Icons.wifi_off, size: 80, color: Colors.grey),
-            
+
             const SizedBox(height: 30),
-            
+
             // Заголовок
             const Text(
               "Отсутствует подключение",
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // Подзаголовок
             const Text(
               "Не удается подключиться к сети.\nПожалуйста, проверьте соединение и попробуйте снова",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
-            
+
             const Spacer(),
-            
+
             // Кнопка "Попробовать снова"
             Padding(
               padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
@@ -69,13 +69,17 @@ class NoInternetScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 55,
                   decoration: BoxDecoration(
-                    color: const Color.fromRGBO(33, 173, 252, 1),
+                    color: Color.fromRGBO(94, 71, 61, 1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Center(
                     child: Text(
                       "Попробовать снова",
-                      style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),

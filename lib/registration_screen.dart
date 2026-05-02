@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/file_upload_widget.dart';
 import 'package:flutter_application_1/pending_screen.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_application_1/user_data.dart';
 
 class ProfileFillScreen extends StatefulWidget {
   const ProfileFillScreen({super.key});
@@ -12,13 +13,18 @@ class ProfileFillScreen extends StatefulWidget {
 
 class _ProfileFillScreenState extends State<ProfileFillScreen> {
   String _selectedRole = 'student';
-  
+  String _inputGroup = "";
+  String _inputName = "";
+  String _inputDirection = "";
+  String _inputStatus = "";
+  String _inputNum = "";
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _groupController = TextEditingController();
   final TextEditingController _departmentController = TextEditingController();
   final TextEditingController _positionController = TextEditingController();
-  final TextEditingController _studentsCountController = TextEditingController();
-  
+  final TextEditingController _studentsCountController =
+      TextEditingController();
+
   FilePickerResult? _selectedDocument;
   String? _errorMessage;
 
@@ -30,7 +36,7 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
       });
       return;
     }
-    
+
     // Валидация в зависимости от роли
     if (_selectedRole == 'student') {
       if (_groupController.text.isEmpty || _departmentController.text.isEmpty) {
@@ -40,14 +46,15 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
         return;
       }
     } else {
-      if (_positionController.text.isEmpty || _studentsCountController.text.isEmpty) {
+      if (_positionController.text.isEmpty ||
+          _studentsCountController.text.isEmpty) {
         setState(() {
           _errorMessage = "Ошибка! Вы не заполнили поля";
         });
         return;
       }
     }
-    
+
     // Проверка наличия документа
     if (_selectedDocument == null) {
       setState(() {
@@ -55,12 +62,29 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
       });
       return;
     }
-    
     // Очищаем ошибку
     setState(() {
       _errorMessage = null;
     });
-    
+    //Группа
+    String text = _groupController.text;
+    setState(() {
+      _inputGroup = text;
+    });
+    //ФИО
+    String text1 = _fullNameController.text;
+    setState(() {
+      _inputName = text1;
+    });
+    //Факультет
+    String text2 = _departmentController.text;
+    setState(() {
+      _inputDirection = text2;
+    });
+    //Сохраняем введённые данные
+    UserData.name = _inputName;
+    UserData.group = _inputGroup;
+    UserData.department = _inputDirection;
     // TODO: Здесь будет отправка данных на сервер
     // Пока просто переходим на экран ожидания
     Navigator.push(
@@ -92,7 +116,10 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                             const Text("Филин", style: TextStyle(fontSize: 24)),
                             const Text(
                               "Проект по поиску помощи в проектах",
-                              style: TextStyle(fontSize: 14, color: Colors.black),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
                               softWrap: true,
                             ),
                           ],
@@ -101,7 +128,7 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                     ],
                   ),
                 ),
-                
+
                 // Заголовок
                 const Padding(
                   padding: EdgeInsets.only(top: 20, left: 30, right: 30),
@@ -113,7 +140,7 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                     ),
                   ),
                 ),
-                
+
                 // Подзаголовок
                 const Padding(
                   padding: EdgeInsets.only(left: 30, right: 30, top: 10),
@@ -125,9 +152,9 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Выбор роли
                 const Padding(
                   padding: EdgeInsets.only(left: 30, right: 30),
@@ -135,12 +162,15 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Выберите роль",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 10),
-                
+
                 Padding(
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Row(
@@ -149,7 +179,8 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                         child: _RoleButton(
                           role: "студент",
                           isSelected: _selectedRole == 'student',
-                          onTap: () => setState(() => _selectedRole = 'student'),
+                          onTap: () =>
+                              setState(() => _selectedRole = 'student'),
                         ),
                       ),
                       const SizedBox(width: 20),
@@ -157,21 +188,28 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                         child: _RoleButton(
                           role: "преподаватель",
                           isSelected: _selectedRole == 'teacher',
-                          onTap: () => setState(() => _selectedRole = 'teacher'),
+                          onTap: () =>
+                              setState(() => _selectedRole = 'teacher'),
                         ),
                       ),
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 30),
-                
+
                 // Поле ФИО
                 const Padding(
                   padding: EdgeInsets.only(left: 30, right: 30),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text("ФИО", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                    child: Text(
+                      "ФИО",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 5),
@@ -181,24 +219,34 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                     controller: _fullNameController,
                     decoration: const InputDecoration(
                       hintText: "Иванов Иван Иванович",
-                      border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(7)),
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(7)),
-                        borderSide: BorderSide(color: Color.fromRGBO(33, 173, 252, 1)),
+                        borderSide: BorderSide(
+                          color: Color.fromRGBO(94, 71, 61, 1),
+                        ),
                       ),
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 15),
-                
+
                 // Динамические поля
                 if (_selectedRole == 'student') ...[
                   const Padding(
                     padding: EdgeInsets.only(left: 30, right: 30),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("Группа", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                      child: Text(
+                        "Группа",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -208,21 +256,31 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                       controller: _groupController,
                       decoration: const InputDecoration(
                         hintText: "111–222",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(7)),
-                          borderSide: BorderSide(color: Color.fromRGBO(33, 173, 252, 1)),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(94, 71, 61, 1),
+                          ),
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 15),
-                  
+
                   const Padding(
                     padding: EdgeInsets.only(left: 30, right: 30),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("Кафедра", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                      child: Text(
+                        "Факультет",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -232,10 +290,14 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                       controller: _departmentController,
                       decoration: const InputDecoration(
                         hintText: "Информационные технологии",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(7)),
-                          borderSide: BorderSide(color: Color.fromRGBO(33, 173, 252, 1)),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(94, 71, 61, 1),
+                          ),
                         ),
                       ),
                     ),
@@ -245,7 +307,13 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                     padding: EdgeInsets.only(left: 30, right: 30),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("Должность", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                      child: Text(
+                        "Должность",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -255,23 +323,30 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                       controller: _positionController,
                       decoration: const InputDecoration(
                         hintText: "Доцент",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(7)),
-                          borderSide: BorderSide(color: Color.fromRGBO(33, 173, 252, 1)),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(94, 71, 61, 1),
+                          ),
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 15),
-                  
+
                   const Padding(
                     padding: EdgeInsets.only(left: 30, right: 30),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Количество студентов, которых могу курировать",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
@@ -283,24 +358,28 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         hintText: "0",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(7)),
-                          borderSide: BorderSide(color: Color.fromRGBO(33, 173, 252, 1)),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(94, 71, 61, 1),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ],
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Загрузка документа
                 Padding(
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: FileUploadWidget(
                     label: "Документы для подтверждения",
-                    subtitle: _selectedRole == 'student' 
+                    subtitle: _selectedRole == 'student'
                         ? "Документ, подтверждающий личность (зачетная книжка)"
                         : "Документ, подтверждающий личность",
                     onFileSelected: (result) {
@@ -310,9 +389,9 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                     },
                   ),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Сообщение об ошибке
                 if (_errorMessage != null)
                   Padding(
@@ -323,17 +402,17 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                
+
                 const SizedBox(height: 10),
-                
+
                 // Кнопка отправки
                 Padding(
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: _SubmitButton(onTap: _submitForm),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Подпись
                 const Padding(
                   padding: EdgeInsets.only(left: 30, right: 30, bottom: 30),
@@ -370,7 +449,9 @@ class _RoleButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? const Color.fromRGBO(33, 173, 252, 1) : Colors.grey.shade300,
+          color: isSelected
+              ? Color.fromRGBO(94, 71, 61, 1)
+              : Colors.grey.shade300,
           borderRadius: BorderRadius.circular(7),
         ),
         child: Center(
@@ -389,9 +470,9 @@ class _RoleButton extends StatelessWidget {
 
 class _SubmitButton extends StatelessWidget {
   final VoidCallback onTap;
-  
+
   const _SubmitButton({required this.onTap});
-  
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -402,7 +483,7 @@ class _SubmitButton extends StatelessWidget {
         width: screenWidth * 0.85,
         height: 50,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(33, 173, 252, 1),
+          color: Color.fromRGBO(94, 71, 61, 1),
           borderRadius: BorderRadius.circular(7),
         ),
         child: const Center(

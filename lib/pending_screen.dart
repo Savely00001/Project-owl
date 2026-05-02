@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/profile_student.dart';
 
 class PendingScreen extends StatelessWidget {
   const PendingScreen({super.key});
@@ -32,59 +33,64 @@ class PendingScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             const Spacer(),
-            
+
             // Заголовок
-            const Text(
+            Text(
               "Проверка документов",
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            
+
             // Подзаголовок
             const Text(
               "Ваша заявка отправлена на модерацию",
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
-            
+
             const SizedBox(height: 40),
-            
+
             // Иконка часов
             const Icon(Icons.hourglass_empty, size: 80, color: Colors.orange),
-            
+
             const SizedBox(height: 30),
-            
+
             // Текст ожидания
             const Text(
               "Пожалуйста, ожидайте решения",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 10),
-            
-            const Text(
-              "Мы уведомим вас, когда проверка будет завершена.\nОбычно это занимает до 24 часов",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.black54),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                "Мы уведомим вас, когда проверка будет завершена.\nОбычно это занимает до 24 часов",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, color: Colors.black54),
+              ),
             ),
-            
+
             const Spacer(),
-            
+
             // Кнопка "Изменить документы"
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Возврат к заполнению профиля
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileStudent()),
+                ); // Возврат к заполнению профиля
               },
               child: const Text(
-                "Изменить документы",
+                "Перейти в профиль",
                 style: TextStyle(
                   fontSize: 16,
-                  color: Color.fromRGBO(33, 173, 252, 1),
+                  color: Color.fromRGBO(94, 71, 61, 1),
                   decoration: TextDecoration.underline,
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 30),
           ],
         ),

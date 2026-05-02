@@ -32,32 +32,32 @@ class SuccessScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             const Spacer(),
-            
+
             // Иконка успеха
             const Icon(Icons.check_circle, size: 100, color: Colors.green),
-            
+
             const SizedBox(height: 30),
-            
+
             // Заголовок
             const Text(
               "Модерация прошла успешно!",
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // Подзаголовок
             const Text(
               "Ваша учетная запись успешно проверена и подтверждена.\nДобро пожаловать!",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
-            
+
             const Spacer(),
-            
+
             // Кнопка "Перейти в приложение"
             Padding(
               padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
@@ -72,13 +72,17 @@ class SuccessScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 55,
                   decoration: BoxDecoration(
-                    color: const Color.fromRGBO(33, 173, 252, 1),
+                    color: Color.fromRGBO(94, 71, 61, 1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Center(
                     child: Text(
                       "Перейти в приложение",
-                      style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),

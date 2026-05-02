@@ -65,7 +65,7 @@ class Code2 extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.only(left: 30, top: 10, right: 30),
                   child: TextField(
-                    cursorColor: Color.fromRGBO(33, 173, 252, 1),
+                    cursorColor: Color.fromRGBO(94, 71, 61, 1),
                     decoration: InputDecoration(
                       fillColor: Color.fromRGBO(136, 132, 132, 1),
                       border: OutlineInputBorder(
@@ -74,7 +74,7 @@ class Code2 extends StatelessWidget {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(7)),
                         borderSide: BorderSide(
-                          color: Color.fromRGBO(33, 173, 252, 1),
+                          color: Color.fromRGBO(94, 71, 61, 1),
                         ),
                       ),
                     ),
@@ -99,7 +99,7 @@ class Code2 extends StatelessWidget {
                       "Отправить код заново",
                       style: TextStyle(
                         fontSize: 14,
-                        color: const Color.fromRGBO(33, 173, 252, 1),
+                        color: Color.fromRGBO(94, 71, 61, 1),
                       ),
                     ),
                   ),
@@ -136,7 +136,7 @@ class MyBotton extends StatelessWidget {
         width: screenWidth * 0.85,
         height: 50,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(33, 173, 252, 1),
+          color: Color.fromRGBO(94, 71, 61, 1),
           borderRadius: BorderRadius.circular(7),
         ),
         child: const Center(
