@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# временные файлы сборки Flutter Desktop
+windows/flutter/ephemeral/
+linux/flutter/ephemeral/
+macos/Flutter/ephemeral/
+ios/Flutter/Flutter.podspec
+Generated.xcconfig
+flutter_export_environment.sh
