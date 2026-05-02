@@ -51,3 +51,9 @@ macos/Flutter/ephemeral/
 ios/Flutter/Flutter.podspec
 Generated.xcconfig
 flutter_export_environment.sh
+
+# временные файлы сборки
+ios/
+linux/
+macos/
+windows/
