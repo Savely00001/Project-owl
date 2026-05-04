@@ -16,8 +16,7 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
   String _inputGroup = "";
   String _inputName = "";
   String _inputDirection = "";
-  String _inputStatus = "";
-  String _inputNum = "";
+
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _groupController = TextEditingController();
   final TextEditingController _departmentController = TextEditingController();
@@ -179,8 +178,10 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                         child: _RoleButton(
                           role: "студент",
                           isSelected: _selectedRole == 'student',
-                          onTap: () =>
-                              setState(() => _selectedRole = 'student'),
+                          onTap: () => setState(() {
+                            _selectedRole = 'student';
+                            UserData.role = 'student';
+                          }),
                         ),
                       ),
                       const SizedBox(width: 20),
@@ -188,8 +189,10 @@ class _ProfileFillScreenState extends State<ProfileFillScreen> {
                         child: _RoleButton(
                           role: "преподаватель",
                           isSelected: _selectedRole == 'teacher',
-                          onTap: () =>
-                              setState(() => _selectedRole = 'teacher'),
+                          onTap: () => setState(() {
+                            _selectedRole = 'teacher';
+                            UserData.role = 'teacher';
+                          }),
                         ),
                       ),
                     ],

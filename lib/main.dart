@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entry.dart';
 
 void main() {
@@ -12,6 +12,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,   // белый фон для всех Scaffold
+        canvasColor: Colors.white,               // белый фон для BottomSheet
+        primaryColor: const Color.fromRGBO(94, 71, 61, 1),
+      ),
       title: "Филин",
       home: Scaffold(
         body: SafeArea(

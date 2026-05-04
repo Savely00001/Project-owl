@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/profile_student.dart';
+import 'teacher_screens/professor_home.dart';
+import 'package:flutter_application_1/user_data.dart';
 
 class PendingScreen extends StatelessWidget {
   const PendingScreen({super.key});
@@ -37,7 +39,7 @@ class PendingScreen extends StatelessWidget {
             const Spacer(),
 
             // Заголовок
-            Text(
+            const Text(
               "Проверка документов",
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
@@ -63,7 +65,7 @@ class PendingScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Text(
                 "Мы уведомим вас, когда проверка будет завершена.\nОбычно это занимает до 24 часов",
                 textAlign: TextAlign.center,
@@ -73,13 +75,20 @@ class PendingScreen extends StatelessWidget {
 
             const Spacer(),
 
-            // Кнопка "Изменить документы"
+            // Кнопка "Перейти в профиль"
             TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileStudent()),
-                ); // Возврат к заполнению профиля
+                if (UserData.role == 'teacher') {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ProfessorHome()),
+                  );
+                } else {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ProfileStudent()),
+                  );
+                }
               },
               child: const Text(
                 "Перейти в профиль",
