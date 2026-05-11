@@ -1,8 +1,44 @@
 import 'package:flutter/material.dart';
 import 'teacher_reviews_screen.dart';
+import 'chat_screen.dart';
 
-class Teachers extends StatelessWidget {
+class Teachers extends StatefulWidget {
   const Teachers({super.key});
+
+  @override
+  State<Teachers> createState() => _TeachersState();
+}
+
+class _TeachersState extends State<Teachers> {
+  bool _showFilters = false;
+  String _selectedDepartment = "Все";
+  String _searchQuery = "";
+
+  final List<String> _departments = [
+    "Все",
+    "Информационные технологии",
+    "Математика",
+    "Физика",
+    "Экономика",
+  ];
+
+  final List<Map<String, String>> _allTeachers = [
+    {'name': 'Иванов Иван Иванович', 'position': 'Доцент', 'department': 'Информационные технологии'},
+    {'name': 'Сергеев Сергей Сергеевич', 'position': 'Доктор наук', 'department': 'Информационные технологии'},
+    {'name': 'Валуева Валерия Викторовна', 'position': 'Кандидат наук', 'department': 'Информационные технологии'},
+    {'name': 'Петров Петр Петрович', 'position': 'Профессор', 'department': 'Математика'},
+    {'name': 'Сидорова Анна Ивановна', 'position': 'Доцент', 'department': 'Физика'},
+  ];
+
+  List<Map<String, String>> get _filteredTeachers {
+    return _allTeachers.where((teacher) {
+      final matchesDepartment = _selectedDepartment == "Все" || teacher['department'] == _selectedDepartment;
+      final matchesSearch = _searchQuery.isEmpty || 
+          teacher['name']!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          teacher['department']!.toLowerCase().contains(_searchQuery.toLowerCase());
+      return matchesDepartment && matchesSearch;
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,60 +58,17 @@ class Teachers extends StatelessWidget {
                   ),
                 ),
               ),
-              const Botton(),
-              const SizedBox(height: 20),
-              // Список преподавателей
-              TeacherCard(
-                name: "Иванов Иван Иванович",
-                position: "Доцент",
-                department: "Информационные технологии",
+              _buildFilterButton(),
+              if (_showFilters) _buildFilters(),
+              const SizedBox(height: 10),
+              ..._filteredTeachers.map((teacher) => TeacherCard(
+                name: teacher['name']!,
+                position: teacher['position']!,
+                department: teacher['department']!,
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TeacherReviewsScreen(
-                        teacherName: "Иванов Иван Иванович",
-                        teacherPosition: "Доцент",
-                        teacherDepartment: "Информационные технологии",
-                      ),
-                    ),
-                  );
+                  _showTeacherOptions(context, teacher);
                 },
-              ),
-              TeacherCard(
-                name: "Сергеев Сергей Сергеевич",
-                position: "Доктор наук",
-                department: "Информационные технологии",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TeacherReviewsScreen(
-                        teacherName: "Сергеев Сергей Сергеевич",
-                        teacherPosition: "Доктор наук",
-                        teacherDepartment: "Информационные технологии",
-                      ),
-                    ),
-                  );
-                },
-              ),
-              TeacherCard(
-                name: "Валуева Валерия Викторовна",
-                position: "Кандидат наук",
-                department: "Информационные технологии",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TeacherReviewsScreen(
-                        teacherName: "Валуева Валерия Викторовна",
-                        teacherPosition: "Кандидат наук",
-                        teacherDepartment: "Информационные технологии",
-                      ),
-                    ),
-                  );
-                },
-              ),
+              )),
               const SizedBox(height: 80),
             ],
           ),
@@ -101,6 +94,180 @@ class Teachers extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFilterButton() {
+    return GestureDetector(
+      onTap: () => setState(() => _showFilters = !_showFilters),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 13),
+        width: MediaQuery.of(context).size.width * 0.85,
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(94, 71, 61, 1),
+          borderRadius: BorderRadius.circular(11),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(_showFilters ? Icons.keyboard_arrow_up : Icons.filter_list, color: Colors.white, size: 18),
+            const SizedBox(width: 8),
+            const Text(
+              "🔍 Нажмите, для настройки поиска",
+              style: TextStyle(fontSize: 13, color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilters() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(11),
+        color: const Color.fromRGBO(218, 218, 218, 1),
+      ),
+      child: Column(
+        children: [
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Фильтры:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            decoration: InputDecoration(
+              hintText: "🔍 Поиск по имени или кафедре...",
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            ),
+            onChanged: (value) => setState(() => _searchQuery = value),
+          ),
+          const SizedBox(height: 12),
+          const Text("Кафедра:", style: TextStyle(fontSize: 14)),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: _departments.map((dept) {
+              return FilterChip(
+                label: Text(dept),
+                selected: _selectedDepartment == dept,
+                onSelected: (_) => setState(() => _selectedDepartment = dept),
+                backgroundColor: Colors.white,
+                selectedColor: const Color.fromRGBO(94, 71, 61, 1).withOpacity(0.2),
+                checkmarkColor: const Color.fromRGBO(94, 71, 61, 1),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showTeacherOptions(BuildContext context, Map<String, String> teacher) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 50,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const Icon(Icons.person, size: 40, color: Color.fromRGBO(224, 167, 87, 1)),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(teacher['name']!, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text(teacher['department']!, style: const TextStyle(color: Colors.black54)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                _buildModalButton(
+                  icon: Icons.chat_bubble_outline,
+                  text: "Написать сообщение",
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatScreen(
+                          teacherName: teacher['name']!,
+                          teacherDepartment: teacher['department']!,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                _buildModalButton(
+                  icon: Icons.star_border,
+                  text: "Посмотреть отзывы",
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TeacherReviewsScreen(
+                          teacherName: teacher['name']!,
+                          teacherPosition: teacher['position']!,
+                          teacherDepartment: teacher['department']!,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildModalButton({required IconData icon, required String text, required VoidCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(11),
+          border: Border.all(color: Colors.grey.shade300),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: const Color.fromRGBO(94, 71, 61, 1), size: 22),
+            const SizedBox(width: 12),
+            Text(text, style: const TextStyle(fontSize: 16)),
+          ],
+        ),
       ),
     );
   }
@@ -150,33 +317,6 @@ class TeacherCard extends StatelessWidget {
             ),
             const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class Botton extends StatelessWidget {
-  const Botton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-        padding: const EdgeInsets.symmetric(vertical: 13),
-        width: screenWidth * 0.85,
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(94, 71, 61, 1),
-          borderRadius: BorderRadius.circular(11),
-        ),
-        child: const Center(
-          child: Text(
-            "🔍 Нажмите, для настройки поиска",
-            style: TextStyle(fontSize: 13, color: Colors.white),
-          ),
         ),
       ),
     );
